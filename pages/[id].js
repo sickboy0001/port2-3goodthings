@@ -9,7 +9,7 @@ export const Text = ({ text }) => {
   if (!text) {
     return null;
   }
-  return text.map((value) => {
+  return text.map((value,index) => {
     const {
       annotations: { bold, code, color, italic, strikethrough, underline },
       text,
@@ -24,7 +24,7 @@ export const Text = ({ text }) => {
           underline ? styles.underline : "",
         ].join(" ")}
         style={color !== "default" ? { color } : {}}
-        key={text.content}
+        key={index}
       >
         {text.link ? <a href={text.link.url}>{text.content}</a> : text.content}
       </span>
