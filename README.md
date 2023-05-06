@@ -51,6 +51,20 @@ Vercel の設定・通常通り
 
 プロジェクトのルートディレクトリで yarn install を再実行します。
 
+## 記録
+
+#### 2023.5.6
+
+Arrow 関数が使えない　 → 通常の関数なら使える・・・変なエラーが出る模様
+
+#### 2023.5.7
+
+Tailwindcss 導入。
+React だと、特段変更する場所はないのかな。
+手順通りインストール後
+app.js にむすびつく css に追記するだけ。
+[出来る限り短く説明する React + Tailwind CSS 入門（忙しい人向け）](https://zenn.dev/rgbkids/articles/7bd919464283d0)の Ract の手順が役に立った。
+
 This is a [Next.js](https://nextjs.org/) blog using [Notions Public API](https://developers.notion.com).
 
 **Demo:** [https://notion-blog-nextjs-coral.vercel.app](https://notion-blog-nextjs-coral.vercel.app)
@@ -85,7 +99,3 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-#### Deploy to vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fsamuelkraft%2Fnotion-blog-nextjs&env=NOTION_TOKEN,NOTION_DATABASE_ID&envDescription=Please%20add%20NOTION_TOKEN%20and%20NOTION_DATABASE_ID%20that%20is%20required%20to%20connect%20the%20blog%20to%20your%20notion%20account.&envLink=https%3A%2F%2Fdevelopers.notion.com%2Fdocs%2Fgetting-started&project-name=notion-blog-nextjs&repo-name=notion-blog-nextjs&demo-title=Notion%20Blog%20Next%20JS&demo-description=%20This%20is%20a%20Next.js%20blog%20using%20Notions%20Public%20API.&demo-url=notion-blog-nextjs-coral.vercel.app)
