@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { getDatabase } from "/src/lib/notion";
 import { Text } from "/src/pages/[id].js";
-import { CommonHeader } from "/src/pages/CommonHeader.js";
+import { Header } from "src/components/Header.js";
 import styles from "src/pages/index.module.css";
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
@@ -15,7 +15,7 @@ export default function Home({ posts }) {
         <title>Notion Next.js blog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <CommonHeader/>  
+      <Header/>  
 
       <main className={styles.container}>
 
