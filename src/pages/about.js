@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Header } from "/src/components/Header.js";
+import { Header } from "/src/components/Header.jsx";
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
 
