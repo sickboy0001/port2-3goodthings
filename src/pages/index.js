@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { getDatabase } from "/src/lib/notion";
 import { Text } from "/src/pages/[id].js";
-import { Header } from "src/components/Header.js";
+import { Header } from "src/components/Header.jsx";
 import styles from "src/pages/index.module.css";
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
