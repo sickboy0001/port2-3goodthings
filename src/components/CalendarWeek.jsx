@@ -1,5 +1,7 @@
+import React from 'react';
+import { CalendarDay } from "./CalendarDay";
+import { GetYmdString } from "/src/lib/datetime";
 
-import { NotionText } from "/src/components/NotionText.jsx";
 
 
 function StartAndEndOfWeeks(TargetDate , weeknumber){
@@ -20,24 +22,15 @@ function StartAndEndOfWeeks(TargetDate , weeknumber){
 }
 
 
-export function WeekCalender(props)  {
+export function CalendarWeek(props)  {
 
   const posts = props.posts
-  // console.log(props.targetdate)
-  // console.log(props.weeknumber)
-  // let thisWeekDate = StartAndEndOfWeeks(props.targetdate,props.weeknumber)
   let thisWeekDate = StartAndEndOfWeeks("2023/04/30",3)
   const startTime = new Date(thisWeekDate[0])
   const endTime = thisWeekDate[1]
 
 
   var thisdate = startTime
-  // var thisdates = []
-  // do {
-  //   thisdate.setDate(thisdate.getDate()+1)
-  //   thisdates.push(thisdate)
-  //   console.log(thisdate)
-  // } while (thisdate < endTime);
   var thisdates = Array.from(
       { length: Math.ceil((endTime - thisdate) / (1000 * 60 * 60 * 24)) }, (_, i) =>
       {
@@ -52,22 +45,7 @@ const events = {};
 
 // イベント配列を作成
 for (const date of thisdates) {
-  // const keydate = date.toLocaleString(
-  //   "ja",
-  //   {
-  //     month: "2-digit",
-  //     day: "2-digit",
-  //     year: "numeric",
-  //   }
-  // );
-  events[date.toLocaleString(
-    "ja",
-    {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-    }
-  )] = [];
+  events[GetYmdString(date)] = [];
 }
 
 
@@ -78,6 +56,7 @@ for (const date in events) {
   events[date]= posts.filter(post =>{
     return (
         //"2023-05-05"　-> "2023/05/05"
+        //todo:これ自体LibにCommon作って入れたほうが確実な気がする。
         (post.properties.Date.date===null?"":post.properties.Date.date.start.replace(/-/g, "/") )
         === date
     )
@@ -85,72 +64,26 @@ for (const date in events) {
   );
   // console.log(events[date])
 }
-// console.log(posts)
-
-
-
-
+  console.log(thisdates)
   return (
   <>
       <div className="my-10">
-        {startTime.toLocaleString(
-            "ja",
-            {
-              month: "2-digit",
-              day: "2-digit",
-              year: "numeric",
-            }
-        )}
-        - {endTime.toLocaleString(
-          "ja",
-          {
-            month: "2-digit",
-            day: "2-digit",
-            year: "numeric",
-          }
-        )}
+        {GetYmdString(startTime)}
+        - 
+        {GetYmdString(endTime)}
       </div>
-      {/* <Calendar /> */}
-
     <div className="grid grid-cols-7 gap-4">
       {thisdates.map((date) =>{
-        const datestring = date.toLocaleString(
-          "ja",
-          {
-            month: "2-digit",
-            day: "2-digit",
-            year: "numeric",
-          })
+        const thisdatestring = GetYmdString(date)
+        const event = (thisdatestring in events?events[thisdatestring]:[])
         return (
-          <div>
-            <div>
-              <p className="border border-gray-400 rounded-lg shadow-md text-gray-600 dark:text-gray-400 font-semibold">
-              {datestring}
-               </p>
-            </div>
-            <div
-            >
-              {
-                datestring in events &&
-                events[datestring].map((thisevent)=>{
-                  return(
-                    <p className="border border-gray-400 rounded-lg shadow-md m-1 p-1 text-gray-600 dark:text-gray-400 text-left">
-                      <NotionText text={thisevent.properties.Thing.title} />
-                    </p>
-                    )
-                  }
-                )
-              }
-            </div>
+          <div key={date}>
+            <CalendarDay date={date} event={event} />
           </div>
           )
       })}
     </div>
-
   </>
 )
 };
-
-
-export  default WeekCalender;
 
