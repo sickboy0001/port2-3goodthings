@@ -1,34 +1,38 @@
 import React from 'react';
 import { CalendarDay } from "./CalendarDay";
 import { GetYmdString } from "/src/lib/datetime";
-
-
-
-function StartAndEndOfWeeks(TargetDate , weeknumber){
-  // console.log(TargetDate)
-  let today = new Date(); //Dateをインスタンス化
-  let thisYear = today.getFullYear(); //今年の年を取得
-  let thisMonth = today.getMonth(); //今月を取得
-  let date = today.getDate(); //今日の日にちを取得
-  let dayNum = today.getDay(); //今日の曜日を取得（0～6までの数字でとれる）
-
-  let thisStartSunday = date - dayNum - (weeknumber-1) * 7; //今日の日にちから曜日の数だけ引く
-  let thisSunday = date - dayNum ; //今日の日にちから曜日の数だけ引く
-  let thisSaturday = thisSunday + 6  //thisSundayに6を足す（はじめの日から6日後）
-  let startTime = new Date(thisYear, thisMonth, thisStartSunday); // 日曜の0:00
-  let endTime = new Date(thisYear, thisMonth, thisSaturday,23,59,59,999); //土曜の23:59
-
-  return [startTime,endTime] //配列に入れて返す
-}
-
+import { useState ,useCallback} from "react";
+import moment from 'moment'
 
 export function CalendarWeek(props)  {
 
-  const posts = props.posts
-  let thisWeekDate = StartAndEndOfWeeks("2023/04/30",3)
-  const startTime = new Date(thisWeekDate[0])
-  const endTime = thisWeekDate[1]
+  const [count,setCount]  =useState(1)//状態？
+  const [baseDate,setBaseDate]  =useState(GetYmdString(new Date()))
 
+  
+  const cols=7
+  const endnumber = 1
+  const startnumber = endnumber - cols*2
+  const posts = props.posts
+  console.log(baseDate)
+  const startTime = moment(baseDate, 'yyyy MM DD').add(startnumber,"d").toDate()
+  const endTime = moment(baseDate, 'yyyy MM DD').add(endnumber,"d").toDate()
+  console.log(startTime.toString() + "-" + endTime.toString() )  
+
+  const handleDayPrev = useCallback(
+    (e)=>  {
+      setBaseDate((prevBaseDate)=>{
+        return moment(prevBaseDate,'YYYY/MM/DD').add(cols, 'd').format('YYYY/MM/DD')
+      })
+    },[baseDate]//意識する必要ない。レスポンスのために最適化する設定ぽい？
+  );
+  const handleDayBack = useCallback(
+    (e)=>  {
+      setBaseDate((prevBaseDate)=>{
+        return moment(prevBaseDate,'YYYY/MM/DD').add(-cols, 'd').format('YYYY/MM/DD')
+      })
+    },[baseDate]//意識する必要ない。レスポンスのために最適化する設定ぽい？
+  );
 
   var thisdate = startTime
   var thisdates = Array.from(
@@ -40,39 +44,64 @@ export function CalendarWeek(props)  {
   });
 
 
-
-const events = {};
-
-// イベント配列を作成
-for (const date of thisdates) {
-  events[GetYmdString(date)] = [];
-}
-
-
-// 各イベントを対応する日付の配列に追加
-for (const date in events) {
-// console.log(date)
-// console.log((date,events[date]))
-  events[date]= posts.filter(post =>{
-    return (
-        //"2023-05-05"　-> "2023/05/05"
-        //todo:これ自体LibにCommon作って入れたほうが確実な気がする。
-        (post.properties.Date.date===null?"":post.properties.Date.date.start.replace(/-/g, "/") )
-        === date
-    )
+  // イベント配列を作成
+  const events = {};
+  for (const date of thisdates) {
+    events[GetYmdString(date)] = [];
   }
-  );
-  // console.log(events[date])
-}
-  console.log(thisdates)
+
+  // 各イベントを対応する日付の配列に追加
+  for (const date in events) {
+    events[date]= posts.filter(post =>{
+        const thisdate = post.properties.Date.date; 
+        // console.log(thisdate)
+        return (
+        //  ""
+         date===(thisdate===null?"":thisdate.start.replace(/-/g, "/") )
+        )
+      }
+      );
+  }
   return (
   <>
-      <div className="my-10">
-        {GetYmdString(startTime)}
-        - 
-        {GetYmdString(endTime)}
+      {/* //ダミー */}
+      <div className="grid grid-cols-4 gap-4">
       </div>
-    <div className="grid grid-cols-7 gap-4">
+      <div className="grid grid-cols-5 gap-4">
+      </div>
+      <div className="grid grid-cols-6 gap-4">
+      </div>
+      <div className="grid grid-cols-7 gap-4">
+      </div>
+      <div className="flex items-center justify-between py-2 px-6">
+          <div className="leading-none rounded-lg transition ease-in-out inline-flex  p-1 items-center text-2xl" >
+              {GetYmdString(startTime)}- {GetYmdString(endTime)}
+						</div>
+					<div className="border rounded-lg px-1" >
+						<button 
+							type="button"
+							className="leading-none rounded-lg transition ease-in-out inline-flex items-center cursor-pointer hover:bg-gray-200 p-1 " 
+              onClick={handleDayBack}>
+ 
+							<svg className="h-6 w-6 text-gray-500 inline-flex leading-none"  >
+								<path  d="M15 19l-7-7 7-7"/>
+							</svg>  
+						</button>
+						<div className="leading-none rounded-lg transition ease-in-out inline-flex  p-1 items-center text-2xl" >
+                Now
+						</div>
+						<button 
+							type="button"
+							className="leading-none rounded-lg transition ease-in-out inline-flex items-center cursor-pointer hover:bg-gray-200 p-1" 
+		          onClick={handleDayPrev}>
+
+							<svg className="h-6 w-6 text-gray-500 inline-flex leading-none"  >
+								<path d="M9 5l7 7-7 7"/>
+							</svg>									  
+						</button>
+					</div>
+				</div>	
+    <div className={`grid grid-cols-${cols.toString()} gap-4`}>
       {thisdates.map((date) =>{
         const thisdatestring = GetYmdString(date)
         const event = (thisdatestring in events?events[thisdatestring]:[])
@@ -83,6 +112,8 @@ for (const date in events) {
           )
       })}
     </div>
+
+
   </>
 )
 };

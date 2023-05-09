@@ -10,7 +10,7 @@ export function CalendarDay(props)  {
   const dateforecolor = 
     props.date.getDay() === 0 ? "text-red-600" : 
     (props.date.getDay() === 6 ? "text-blue-600" : "text-gray-500");
-  console.log(props.event);
+  // console.log(props.event);
   return (
   <div key={datestring}>
       <div>

@@ -23,7 +23,7 @@ export default function Goodthings({ posts }) {
       <Header/>  
       <main>
       <section>
-        <div className="relative items-center w-full  mx-auto md:px-12 lg:px-16 max-w-7xl lg:py-24">
+        <div className="relative items-center w-full  mx-auto md:px-12 lg:px-16 max-w-7xl lg:py-6">
           <div className="flex w-full mx-auto text-left">
             <div className="relative inline-flex items-center mx-auto align-middle">
               <div className="text-center">
