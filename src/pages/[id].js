@@ -31,6 +31,7 @@ export const Text = ({ text }) => {
     );
   });
 };
+ 
 
 const renderNestedList = (block) => {
   const { type } = block;
