@@ -13,7 +13,7 @@ export function CalendarDay(props)  {
   // console.log(props.event);
   const datebgcolor = 
     props.date.getDay() === 0 ? "bg-red-100" : 
-    (props.date.getDay() === 6 ? "bg-blue-100" : "bg-sky-100");
+    (props.date.getDay() === 6 ? "bg-blue-100" : "bg-sky-50");
   // console.log(props.event);
   return (
   <div key={datestring}>
@@ -28,7 +28,7 @@ export function CalendarDay(props)  {
             // console.log(test)
             // var test = [...thisevent.properties.Thing.title , ...thisevent.properties.Text.rich_text]
             // console.log(test)
-            
+
             return(
               <p key={index} className="border border-gray-400 rounded-lg shadow-md p-1 m-0.5 bg-white text-gray-600 dark:text-gray-400 text-left">
                 <NotionText text={[...thisevent.properties.Thing.title , ...thisevent.properties.Text.rich_text] } />

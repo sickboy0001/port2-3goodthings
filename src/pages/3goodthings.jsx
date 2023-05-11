@@ -6,12 +6,10 @@ import { CalendarWeek } from "/src/components/CalendarWeek"
 export const database3GTId = process.env.NOTION_DATABASE_3GT_ID;
 
 export default function Goodthings({ posts }) {
-
   const posts_local = posts.filter(post =>
      post.properties.Thing.title.length>0
    );
-  const weeknumber = 3;
-  const targetdate = '2023-05-07';
+
   
   // console.log(posts)
   return (
@@ -36,7 +34,7 @@ export default function Goodthings({ posts }) {
                 <p className="text-left">３GoodThingsを継続的に行うことで、ポジティブな思考が身につき、ストレスや不安に対する耐性が上がります。また、自分自身の良い面に気づくことができ、自信を持つことができるようになります。</p>
                 <p className="text-left">毎日続けることが大切ですが、やりすぎないように注意しましょう。また、他人と比べることなく、自分のペースで取り入れていくことが大切です。</p>
                 <p className="text-left">３GoodThingsを始めて、幸福感を高めてみませんか？</p>
-                <CalendarWeek posts={posts_local} targetdate={targetdate} weeknumber={weeknumber}/>
+                <CalendarWeek posts={posts_local} />
               </div>
             </div>
           </div>

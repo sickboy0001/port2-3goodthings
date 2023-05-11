@@ -69,3 +69,42 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function addThing(databaseId,title,startDate) {
+
+  //成功or失敗したときのメッセージとして用意しています。
+  let returnMessage = "";
+  //Access-Control-Allow-Origin　のエラーが出る。
+  //いろいろな対策をして使う方法もなくはないようですが… ブラウザからの登録はNG　参照は行ける・・・Reactつかえんてことか・・・・
+  (async () => {
+    const response =  await notion.pages.create({
+      parent: { database_id: databaseId },
+      properties: {
+        Thing: {
+          title: [
+            {
+              text: {
+                content: title,
+              },
+            },
+          ],
+        },
+        Date: {
+          date: [
+            {
+              start: {
+                // 引数
+                content: startDate,
+              },
+            },
+          ],
+        }
+      }
+    });
+    console.log(response);
+  })();
+
+
+
+  return returnMessage;
+}
